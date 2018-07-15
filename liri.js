@@ -28,6 +28,7 @@ if (command == "my-tweets") {
 };
 
 // Grab all words in process.argv for the song name
+var search;
 var song = "";
 for (var i = 3; i < commandArgs.length; i++) {
     if (i > 3 && i < commandArgs.length) {
@@ -37,11 +38,17 @@ for (var i = 3; i < commandArgs.length; i++) {
     }
 }
 
+if (song === "") {
+    search = "The Sign Ace of Base";
+} else {
+    search = song;
+}
+
 // Spotify command
 if (command == "spotify-this-song") {
     spotify.search({
         type: 'track',
-        query: song,
+        query: search,
         limit: 1
     }, function(err, data) {
         if (err) {
