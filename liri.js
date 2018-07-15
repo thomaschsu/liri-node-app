@@ -38,6 +38,7 @@ for (var i = 3; i < commandArgs.length; i++) {
     }
 }
 
+// If there is no search, automatically search for 'the sign'
 if (song === "") {
     search = "The Sign Ace of Base";
 } else {
