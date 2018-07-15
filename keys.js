@@ -1,5 +1,6 @@
-console.log('Keys.js is Loaded!');
-
+console.log('==================');
+console.log('KEYS.JS IS LOADED!');
+console.log('==================');
 exports.twitter = {
   consumer_key: process.env.TWITTER_CONSUMER_KEY,
   consumer_secret: process.env.TWITTER_CONSUMER_SECRET,

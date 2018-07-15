@@ -27,22 +27,22 @@ if (command == "my-tweets") {
     });
 };
 
-// Grab all words in process.argv for the song name
+// Grab all words in process.argv for the query
 var search;
-var song = "";
+var query = "";
 for (var i = 3; i < commandArgs.length; i++) {
     if (i > 3 && i < commandArgs.length) {
-        song = song + " " + commandArgs[i];
+        query = query + " " + commandArgs[i];
     } else {
-        song += commandArgs[i];
+        query += commandArgs[i];
     }
 }
 
 // If there is no search, automatically search for 'the sign'
-if (song === "") {
+if (query === "") {
     search = "The Sign Ace of Base";
 } else {
-    search = song;
+    search = query;
 }
 
 // Spotify command
@@ -64,3 +64,8 @@ if (command == "spotify-this-song") {
         }
     });
 }
+
+// OMDB command
+if (command == "movie-this") {
+    console.log("This movie!");
+};
