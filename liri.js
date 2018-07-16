@@ -16,47 +16,52 @@ var client = new Twitter(keys.twitter);
 var command = process.argv[2];
 var commandArgs = process.argv;
 
-// If command is 'my-tweets', grab last 20 tweets and display them
-function myTweet() {
-    if (command == "my-tweets") {
-        client.get("statuses/user_timeline", {
-            user_id: "thomashsu13"
-        }, function(error, tweets, response) {
-            for (var i = 0; i < 20; i++) {
-                console.log("\n Tweet #" + i + " Created: " + tweets[i].created_at);
-                console.log("================================================");
-                console.log(tweets[i].text);
-            }
-        });
-    };
+// Function calls from command
+if (command === "my-tweets") {
+    myTweet();
+} else if (command === "spotify-this-song") {
+    spotifySong(query);
+} else if (command == "movie-this") {
+    omdbFunc();
+} else if (command == "do-what-it-says") {
+    doSays();
 }
 
-// Runs mytweet function
-myTweet();
-
-// Grab all words in process.argv for the query
-var search;
-var query = "";
-for (var i = 3; i < commandArgs.length; i++) {
-    if (i > 3 && i < commandArgs.length) {
-        query = query + " " + commandArgs[i];
-    } else {
-        query += commandArgs[i];
-    }
+// If command is 'my-tweets', grab last 20 tweets and display them
+function myTweet() {
+    client.get("statuses/user_timeline", {
+        user_id: "thomashsu13"
+    }, function(error, tweets, response) {
+        for (var i = 0; i < 20; i++) {
+            console.log("\n Tweet #" + i + " Created: " + tweets[i].created_at);
+            console.log("================================================");
+            console.log(tweets[i].text);
+        }
+    });
 }
 
 // Spotify command
-if (command == "spotify-this-song") {
+function spotifySong(query) {
+    // Grab all words in process.argv for the query
+    var song;
+    var query = "";
+    for (var i = 3; i < commandArgs.length; i++) {
+        if (i > 3 && i < commandArgs.length) {
+            query = query + " " + commandArgs[i];
+        } else {
+            query += commandArgs[i];
+        }
+    }
     // If there is no search, automatically search for 'the sign'
     if (query === "") {
-        search = "The Sign Ace of Base";
+        song = "The Sign Ace of Base";
     } else {
-        search = query;
+        song = query;
     }
     // Spotify search function
     spotify.search({
         type: "track",
-        query: search,
+        query: song,
         limit: 1
     }, function(err, data) {
         if (err) {
@@ -75,14 +80,9 @@ if (command == "spotify-this-song") {
 }
 
 // OMDB command
-if (command == "movie-this") {
+function omdbFunc() {
+    var search;
     var movieName = "";
-    // If no moviename then search for Mr. Nobody
-    if (movieName === "") {
-        movieName = "Mr. Nobody";
-    } else {
-        movieName = movieName;
-    }
     // Grab words in process.argv for moviename
     for (var i = 3; i < commandArgs.length; i++) {
         if (i > 3 && i < commandArgs.length) {
@@ -91,7 +91,13 @@ if (command == "movie-this") {
             movieName += commandArgs[i];
         }
     }
-    var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=8506adc6";
+    // If no moviename then search for Mr. Nobody
+    if (movieName === "") {
+        search = "Mr. Nobody";
+    } else {
+        search = movieName;
+    }
+    var queryUrl = "http://www.omdbapi.com/?t=" + search + "&y=&plot=short&apikey=8506adc6";
     request(queryUrl, function(error, response, body) {
         // If the request is successful
         if (!error && response.statusCode === 200) {
@@ -112,22 +118,31 @@ if (command == "movie-this") {
 };
 
 // Do what it says command
-if (command == "do-what-it-says") {
+function doSays() {
     fs.readFile("random.txt", "utf8", function(error, data) {
         // Logs Errors.
         if (error) {
-          return console.log(error);
+            return console.log(error);
         }
 
         // Then split it by commas (to make it more readable)
         var dataArr = data.split(",");
-      
+        var action = dataArr[0];
+        var search = dataArr[1];
         // We will then re-display the content as an array for later use.
-        console.log(dataArr[0]);
         console.log(dataArr[1]);
 
-        if (dataArr[0] == "spotify-this-song") {
-            myTweet();
+        // If text file says spotify-this-song, run spotify
+        switch (action) {
+            case "spotify-this-song":
+                spotifySong(search);
+                break;
+            case "my-tweets":
+                myTweet();
+                break;
+            case "movie-this":
+                omdbFunc();
+                break;
         }
-      });
+    });
 }
