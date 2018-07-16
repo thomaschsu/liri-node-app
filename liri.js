@@ -16,13 +16,23 @@ var client = new Twitter(keys.twitter);
 var command = process.argv[2];
 var commandArgs = process.argv;
 
+// Grabs query from user
+var query = "";
+for (var i = 3; i < commandArgs.length; i++) {
+    if (i > 3 && i < commandArgs.length) {
+        query = query + " " + commandArgs[i];
+    } else {
+        query += commandArgs[i];
+    }
+}
+
 // Function calls from command
 if (command === "my-tweets") {
     myTweet();
 } else if (command === "spotify-this-song") {
     spotifySong(query);
 } else if (command == "movie-this") {
-    omdbFunc();
+    omdbFunc(query);
 } else if (command == "do-what-it-says") {
     doSays();
 }
@@ -44,14 +54,6 @@ function myTweet() {
 function spotifySong(query) {
     // Grab all words in process.argv for the query
     var song;
-    var query = "";
-    for (var i = 3; i < commandArgs.length; i++) {
-        if (i > 3 && i < commandArgs.length) {
-            query = query + " " + commandArgs[i];
-        } else {
-            query += commandArgs[i];
-        }
-    }
     // If there is no search, automatically search for 'the sign'
     if (query === "") {
         song = "The Sign Ace of Base";
@@ -80,22 +82,13 @@ function spotifySong(query) {
 }
 
 // OMDB command
-function omdbFunc() {
+function omdbFunc(query) {
     var search;
-    var movieName = "";
-    // Grab words in process.argv for moviename
-    for (var i = 3; i < commandArgs.length; i++) {
-        if (i > 3 && i < commandArgs.length) {
-            movieName = movieName + "+" + commandArgs[i];
-        } else {
-            movieName += commandArgs[i];
-        }
-    }
-    // If no moviename then search for Mr. Nobody
-    if (movieName === "") {
+    // If no query then search for Mr. Nobody
+    if (query === "") {
         search = "Mr. Nobody";
     } else {
-        search = movieName;
+        search = query;
     }
     var queryUrl = "http://www.omdbapi.com/?t=" + search + "&y=&plot=short&apikey=8506adc6";
     request(queryUrl, function(error, response, body) {
@@ -129,10 +122,8 @@ function doSays() {
         var dataArr = data.split(",");
         var action = dataArr[0];
         var search = dataArr[1];
-        // We will then re-display the content as an array for later use.
-        console.log(dataArr[1]);
 
-        // If text file says spotify-this-song, run spotify
+        // Switch depending on what the text file says
         switch (action) {
             case "spotify-this-song":
                 spotifySong(search);
@@ -141,7 +132,7 @@ function doSays() {
                 myTweet();
                 break;
             case "movie-this":
-                omdbFunc();
+                omdbFunc(search);
                 break;
         }
     });
