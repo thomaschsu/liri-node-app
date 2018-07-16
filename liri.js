@@ -3,9 +3,10 @@ require("dotenv").config();
 
 // Require Keys
 var keys = require("./keys");
-var Twitter = require('twitter');
-var Spotify = require('node-spotify-api');
+var Twitter = require("twitter");
+var Spotify = require("node-spotify-api");
 var request = require("request");
+var fs = require("fs");
 
 // Accesses keys
 var spotify = new Spotify(keys.spotify);
@@ -16,17 +17,22 @@ var command = process.argv[2];
 var commandArgs = process.argv;
 
 // If command is 'my-tweets', grab last 20 tweets and display them
-if (command == "my-tweets") {
-    client.get('statuses/user_timeline', {
-        user_id: 'thomashsu13'
-    }, function(error, tweets, response) {
-        for (var i = 0; i < 20; i++) {
-            console.log("\n Tweet #" + i + " Created: " + tweets[i].created_at);
-            console.log("================================================");
-            console.log(tweets[i].text);
-        }
-    });
-};
+function myTweet() {
+    if (command == "my-tweets") {
+        client.get("statuses/user_timeline", {
+            user_id: "thomashsu13"
+        }, function(error, tweets, response) {
+            for (var i = 0; i < 20; i++) {
+                console.log("\n Tweet #" + i + " Created: " + tweets[i].created_at);
+                console.log("================================================");
+                console.log(tweets[i].text);
+            }
+        });
+    };
+}
+
+// Runs mytweet function
+myTweet();
 
 // Grab all words in process.argv for the query
 var search;
@@ -47,13 +53,14 @@ if (command == "spotify-this-song") {
     } else {
         search = query;
     }
+    // Spotify search function
     spotify.search({
-        type: 'track',
+        type: "track",
         query: search,
         limit: 1
     }, function(err, data) {
         if (err) {
-            return console.log('Error occurred: ' + err);
+            return console.log("Error occurred: " + err);
         } else {
             console.log("================================================");
             console.log("|              Spotify Command                 |");
@@ -103,3 +110,24 @@ if (command == "movie-this") {
         }
     })
 };
+
+// Do what it says command
+if (command == "do-what-it-says") {
+    fs.readFile("random.txt", "utf8", function(error, data) {
+        // Logs Errors.
+        if (error) {
+          return console.log(error);
+        }
+
+        // Then split it by commas (to make it more readable)
+        var dataArr = data.split(",");
+      
+        // We will then re-display the content as an array for later use.
+        console.log(dataArr[0]);
+        console.log(dataArr[1]);
+
+        if (dataArr[0] == "spotify-this-song") {
+            myTweet();
+        }
+      });
+}
