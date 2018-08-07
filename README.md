@@ -1,6 +1,19 @@
-# liri-node-app
+# LIRI - Node Application
 
-Run Liri.js with node.
+### Description
+LIRI is a node application that uses the CLI to take in commands to run API's. It can read tweets, spotify a song, find a movie, or read a text file and runs whatever command is inside.
+
+- - -
+
+### Screenshots
+
+##### Main UI
+![Image 1](/images/image-01.jpg)
+
+
+- - -
+
+### Commands
 
 1. `node liri.js my-tweets`
 
@@ -40,3 +53,9 @@ Run Liri.js with node.
 4. `node liri.js do-what-it-says`
    
    * Using the `fs` Node package, LIRI will take the text inside of random.txt and then use it to call one of LIRI's commands.
+
+   ### Skills Used
+   1. Node.js NPM
+   2. JavaScript
+   3. API
+   4. CLI
