@@ -54,6 +54,8 @@ LIRI is a node application that uses the CLI to take in commands to run API's. I
    
    * Using the `fs` Node package, LIRI will take the text inside of random.txt and then use it to call one of LIRI's commands.
 
+- - -
+
    ### Skills Used
    1. Node.js NPM
    2. JavaScript
