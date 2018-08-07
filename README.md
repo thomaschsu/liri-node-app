@@ -57,7 +57,7 @@ LIRI is a node application that uses the CLI to take in commands to run API's. I
 - - -
 
    ### Skills Used
-   1. Node.js NPM
+   1. Node.js / NPM
    2. JavaScript
    3. API
    4. CLI
