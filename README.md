@@ -5,10 +5,8 @@ LIRI is a node application that uses the CLI to take in commands to run API's. I
 
 - - -
 
-### Screenshots
-
-##### Main UI
-![Image 1](/images/image-01.jpg)
+### Demo
+![Image 1](/images/image01.gif)
 
 
 - - -
