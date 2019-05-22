@@ -19,6 +19,7 @@
   "homepage": "https://github.com/thomaschsu/liri-node-app#readme",
   "dependencies": {
     "dotenv": "^6.0.0",
+    "extend": "^3.0.2",
     "keys": "^0.1.2",
     "node-spotify-api": "^1.0.7",
     "request": "^2.87.0",
